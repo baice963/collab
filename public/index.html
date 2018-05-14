@@ -1,0 +1,90 @@
+<html>
+<head>
+	<!-- <meta charset = "UTF-8"> -->
+	<title = "neversatisfied"></title>
+		<link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+		<link href = "style.css" rel = "stylesheet" type="text/css">
+		<script  type="text/javascript" src="socket.io.js"></script>
+		<script type='text/javascript' src='utils.js'></script>
+
+		<script  type="text/javascript" src="painting.js"></script>
+
+</head>
+
+<body>
+
+	<div class = "header">
+		<h1>never statisfied</h1>
+	<!-- 	<img src = "images/menu-icon.png">	 -->
+		<h4>short text about the project - for example, "Real time feed of what its like to never be able to achieve perfect symmetry"</h4>
+	</div>
+	
+	
+	<div id="painting-container"></div>
+
+	<script>
+
+	//get request to get the last value (ajax call for the last value)
+
+		const scale = 50/900;	//1000 millimeter = 50vw (half of viewport);
+
+		var painting2 = new Painting(600, 600, 257, 356, 300, 90, false, 'images/painting2.png');
+		var painting1 = new Painting(600, 600, 300, 300, 283, 100, true, 'images/painting1.png');
+	
+		//rotate(90);
+		//setTimeout( function(){painting1.hardTurn(10)},2500);
+
+    	var socket = io();
+    	socket.on('message', function(msg){
+      		
+      		console.log("hey: " + msg);
+      		painting1.hardTurn(msg);
+      		console.log(msg);
+      		
+    	});
+
+    	socket.on('message2', function(msg){
+      		console.log(msg);
+      		painting2.hardTurn(msg);
+
+	
+    	});
+
+
+  
+    	
+    	socket.on('prev_enc', function(msg){
+      		console.log(msg.last_value);
+      		var last_angle = parseInt(msg.last_value);
+      		painting1.hardTurn(last_angle);
+     
+    	});
+
+    	socket.on('prev_pot', function(msg){
+      		console.log(msg.last_value);
+      		var last_angle = parseInt(msg.last_value);
+      		painting2.hardTurn(last_angle);
+     
+    	});
+
+    	
+
+	</script>
+
+
+	<div class = "activity">
+		<h2>activity</h2>
+		<hr>
+		<h5>now : you’ve aligned painting at Paris and disrupted the symmetry at Lausanne....
+		<br>
+		<br>
+		15:00 hrs : Sebastien aligned painting at Lausanne and disrupted the symmetry at Paris....
+		<br>
+		<br>
+		13:00 hrs : Ice aligned painting at Paris and disrupted the symmetry at Lausanne....</h5>
+	</div>
+
+
+	</body>
+</html>
